@@ -16,7 +16,7 @@ export function generateLobbyCode() {
 }
 
 export function writeTriviaDataToJsonFile() {
-  const fileName = "./data/trivia-qa.json";
+  const fileName = "./data/trivia-data/trivia-qa.json";
   fs.writeFile(fileName, JSON.stringify(triviaQuestions, null, 2), (err) => {
     if (err) {
       console.error("Error writing file");
@@ -28,7 +28,7 @@ export function writeTriviaDataToJsonFile() {
 
 export function getTriviaFromJsonFile() {
   try {
-    const triviaData = fs.readFileSync("./data/trivia-qa.json");
+    const triviaData = fs.readFileSync("./data/trivia-data/trivia-qa.json");
     return JSON.parse(triviaData);
   } catch (err) {
     console.error("Error reading or parsing trivia-qa.json", err);
@@ -36,7 +36,7 @@ export function getTriviaFromJsonFile() {
 }
 
 export function getTriviaByDifficultyFromJsonFile(difficulty) {
-  fs.readFileSync("./data/trivia-qa.json", "utf-8"),
+  fs.readFileSync("./data/trivia-data/trivia-qa.json", "utf-8"),
     (err, data) => {
       if (err) {
         console.error("Error Reading File: trivia-qa.json");
