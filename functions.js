@@ -1,18 +1,28 @@
-import { lobbyCodesArr } from "./apidata.js";
+import { log } from "console";
 import { triviaQuestions } from "./apidata.js";
 import fs from "fs";
 
-export function generateLobbyCode() {
-  let lobbyCode = Math.floor(Math.random() * 5);
+// export function generateLobbyCode() {
+//   let lobbyCode = Math.floor(Math.random() * 5);
 
-  lobbyCodesArr.forEach((code) => {
-    if (lobbyCode == code) {
-      generateLobbyCode();
-    } else {
-      lobbyCodesArr.push(lobbyCode);
-    }
-  });
-  return [lobbyCode, lobbyCodesArr];
+//   lobbyCodesArr.forEach((code) => {
+//     if (lobbyCode == code) {
+//       generateLobbyCode();
+//     } else {
+//       lobbyCodesArr.push(lobbyCode);
+//     }
+//   });
+//   return [lobbyCode, lobbyCodesArr];
+// }
+
+export function generateLobbyCode() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  let lobbyCode = "";
+  for (let i = 0; i < 7; i++) {
+    const randomValue = Math.floor(Math.random() * chars.length);
+    lobbyCode += chars[randomValue];
+  }
+  return lobbyCode;
 }
 
 export function writeTriviaDataToJsonFile() {
