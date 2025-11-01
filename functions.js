@@ -1,19 +1,4 @@
-import { log } from "console";
-import { triviaQuestions } from "./apidata.js";
 import fs from "fs";
-
-// export function generateLobbyCode() {
-//   let lobbyCode = Math.floor(Math.random() * 5);
-
-//   lobbyCodesArr.forEach((code) => {
-//     if (lobbyCode == code) {
-//       generateLobbyCode();
-//     } else {
-//       lobbyCodesArr.push(lobbyCode);
-//     }
-//   });
-//   return [lobbyCode, lobbyCodesArr];
-// }
 
 export function generateLobbyCode() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -22,7 +7,53 @@ export function generateLobbyCode() {
     const randomValue = Math.floor(Math.random() * chars.length);
     lobbyCode += chars[randomValue];
   }
+  // if (validateLobbyCode(lobbyCode) == "active") {
+  //   console.log("active");
+  // }
+
+  const lobbyDataObj = {
+    host: "",
+    lobbyCode: lobbyCode,
+    active: true,
+  };
+
+  writeLobbyDataToJsonFile(lobbyDataObj);
   return lobbyCode;
+}
+
+//TODO: validateLobbyCode against lobby-codes.json
+
+function validateLobbyCode(lobbyCode) {
+  const fileName = "./data/lobby-codes.json/";
+  const lobbyCodeData = fs.readFileSync(fileName);
+  console.log(lobbyCode);
+  console.log(lobbyCodeData);
+}
+
+function getLobbyDataFromJsonFile() {
+  const fileName = "./data/lobby-codes.json";
+  try {
+    if (!fs.existsSync(fileName)) return [];
+    const json = fs.readFileSync(fileName, "utf8") || "[]";
+    const parsed = JSON.parse(json);
+    return Array.isArray(parsed) ? parsed : [parsed];
+  } catch (err) {
+    console.error("Error reading or parsing lobby file:", err);
+    return [];
+  }
+}
+
+function writeLobbyDataToJsonFile(lobbyDataObj) {
+  const fileName = "./data/lobby-codes.json";
+  const lobbyData = getLobbyDataFromJsonFile();
+  lobbyData.push(lobbyDataObj);
+
+  try {
+    fs.writeFileSync(fileName, JSON.stringify(lobbyData, null, 2));
+    console.log(`Added lobby ${lobbyDataObj.lobbyCode}`);
+  } catch (err) {
+    console.error("Error writing lobby file:", err);
+  }
 }
 
 export function writeTriviaDataToJsonFile() {
@@ -53,7 +84,7 @@ export function getTriviaByDifficultyFromJsonFile(difficulty) {
         return;
       }
       try {
-        const jsonData = JSON.parse(data); // parse the JSON string
+        const jsonData = JSON.parse(data);
         console.log(jsonData);
       } catch (error) {
         console.error("Error parsing JSON...", error);
