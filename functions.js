@@ -3,31 +3,35 @@ import fs from "fs";
 export function generateLobbyCode() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
   let lobbyCode = "";
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 4; i++) {
     const randomValue = Math.floor(Math.random() * chars.length);
     lobbyCode += chars[randomValue];
   }
-  // if (validateLobbyCode(lobbyCode) == "active") {
-  //   console.log("active");
-  // }
+  if (validateLobbyCode(lobbyCode) == true) {
+    console.log("Code Already Exists, trying again: ");
+    return generateLobbyCode();
+  } else {
+    const lobbyDataObj = {
+      host: "",
+      lobbyCode: lobbyCode,
+      active: true,
+    };
 
-  const lobbyDataObj = {
-    host: "",
-    lobbyCode: lobbyCode,
-    active: true,
-  };
-
-  writeLobbyDataToJsonFile(lobbyDataObj);
-  return lobbyCode;
+    writeLobbyDataToJsonFile(lobbyDataObj);
+    return lobbyCode;
+  }
 }
 
-//TODO: validateLobbyCode against lobby-codes.json
-
 function validateLobbyCode(lobbyCode) {
-  const fileName = "./data/lobby-codes.json/";
-  const lobbyCodeData = fs.readFileSync(fileName);
-  console.log(lobbyCode);
-  console.log(lobbyCodeData);
+  const activeLobbyData = getLobbyDataFromJsonFile();
+
+  return activeLobbyData.some((entry) => {
+    if (entry.lobbyCode == lobbyCode) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 }
 
 function getLobbyDataFromJsonFile() {

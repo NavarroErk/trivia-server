@@ -49,6 +49,5 @@ app.get("/api/trivia-data/:difficulty", (req, res) => {
 app.get("/api/lobby-code", (req, res) => {
   let lobbyCode = generateLobbyCode();
   console.log(lobbyCode);
-
   res.json(lobbyCode);
 });
