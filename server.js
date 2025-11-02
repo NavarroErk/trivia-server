@@ -1,18 +1,15 @@
 import express from "express";
 import http from "http";
-// import { clearInterval } from "timers";
 import { WebSocketServer } from "ws";
 import cors from "cors";
-// import { triviaQuestions } from "./apidata.js";
+
 import {
   generateLobbyCode,
   getTriviaByDifficultyFromJsonFile,
   getTriviaFromJsonFile,
 } from "./functions.js";
-// import { loadLobbyCodes, saveLobbyCodes } from "./apidata.js";
 
 const app = express();
-// let lobbyCodesArr = loadLobbyCodes();
 app.use(cors());
 // Create http server, pass Express app as listener
 const server = http.createServer(app);
@@ -21,7 +18,6 @@ const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
   console.log("Client Connected");
-  // console.log(triviaQuestions.easy);
 
   ws.on("message", (data) => {
     console.log(data);
