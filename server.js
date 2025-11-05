@@ -8,9 +8,11 @@ import {
   getTriviaByDifficultyFromJsonFile,
   getTriviaFromJsonFile,
 } from "./functions.js";
+import { log } from "console";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 // Create http server, pass Express app as listener
 const server = http.createServer(app);
 // Create wsserver and attach to shared HTTP server
@@ -46,4 +48,10 @@ app.get("/api/lobby-code", (req, res) => {
   let lobbyCode = generateLobbyCode();
   console.log(lobbyCode);
   res.json(lobbyCode);
+});
+
+app.post("/api/add-custom-trivia-to-profile", (req, res) => {
+  const receivedData = req.body;
+  console.log("Received Data: ", receivedData);
+  res.json("Received: ", receivedData);
 });
